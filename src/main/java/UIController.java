@@ -9,11 +9,15 @@ import java.util.Scanner;
 
 public class UIController {
     DataModel dataModel;
-
-
-    
+    SaveManagerUI ui;
+    public enum Window {
+        START,
+        DOWNLOAD,
+        UPLOAD,
+        ADD
+    }
     public UIController(){
-        dataModel = new DataModel();
+        dataModel = DataModel.getInstance();
     }
 
     private static void dbPractice(){
@@ -74,17 +78,28 @@ public class UIController {
     }
 
     public void downloadWindow() {
-        dataModel.setWindow(DataModel.Window.DOWNLOAD);
+        ui.notify(Window.DOWNLOAD);
     }
 
     public void uploadWindow() {
-        dataModel.setWindow(DataModel.Window.UPLOAD);
+        ui.notify(Window.UPLOAD);
     }
 
     public void newWindow() {
-        dataModel.setWindow(DataModel.Window.NEW);
+        ui.notify(Window.ADD);
     }
-    public void startWindow(){
-        dataModel.setWindow(DataModel.Window.START);
+
+    //handle confirmations and
+    public void confirmOrCancel(String command) {
+        switch (command){
+            case "Cancel" -> ui.notify(Window.START);
+            default -> {
+                //TODO: Add other cases and logic here
+            }
+        }
+    }
+
+    public void setView(SaveManagerUI ui) {
+        this.ui = ui;
     }
 }

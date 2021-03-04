@@ -8,21 +8,19 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class DataModel {
-    public enum Window {
-        START,
-        DOWNLOAD,
-        UPLOAD,
-        NEW
-    }
 
+    private static DataModel instance = new DataModel();
     private MongoDatabase mongoDatabase;
-    private Window window;
-    public DataModel() {
+
+    private SaveManagerUI saveManagerUI;
+    private DataModel() {
         mongoDatabase = getDbConnection();
         //store all Game titles and their filepaths to saved games
         //store the db connection?
-        //store UI window state
-        Window window = Window.START;
+    }
+
+    public static DataModel getInstance(){
+        return instance;
     }
 
     private MongoDatabase getDbConnection() {
@@ -43,16 +41,7 @@ public class DataModel {
         }
         return scan.nextLine();
     }
-
     public MongoDatabase getMongoDatabase() {
         return mongoDatabase;
-    }
-
-    public Window getWindow() {
-        return window;
-    }
-
-    public void setWindow(Window window) {
-        this.window = window;
     }
 }
