@@ -1,15 +1,6 @@
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoDatabase;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.Objects;
-import java.util.Scanner;
-
 public class UIController {
-    DataModel dataModel;
-    SaveManagerUI ui;
+    private DataModel dataModel;
+    private SaveManagerUI ui;
     public enum Window {
         START,
         DOWNLOAD,
@@ -97,6 +88,9 @@ public class UIController {
                 //TODO: Add other cases and logic here
             }
         }
+    }
+    public void saveData(){
+        dataModel.saveData();
     }
 
     public void setView(SaveManagerUI ui) {
