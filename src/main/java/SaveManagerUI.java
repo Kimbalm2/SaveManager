@@ -26,6 +26,7 @@ public class SaveManagerUI {
 
         mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
+                uiController.saveData();
                 System.exit(0);
             }
         });
