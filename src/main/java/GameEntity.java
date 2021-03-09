@@ -1,8 +1,9 @@
-public class gameEntity {
+
+public class GameEntity {
     private final String gameName;
     private final String filePath;
 
-    public gameEntity(String gameName, String filePath){
+    public GameEntity(String gameName, String filePath){
         this.gameName = gameName;
         this.filePath = filePath;
     }
