@@ -1,6 +1,8 @@
-public class UIController {
+public class UIController{
     private DataModel dataModel;
     private SaveManagerUI ui;
+    private String tmpGameTitle = "";
+    private String tmpGameFolder = "";
     public enum Window {
         START,
         DOWNLOAD,
@@ -80,12 +82,15 @@ public class UIController {
         ui.notify(Window.ADD);
     }
 
+    public void startWindow(){ui.notify(Window.START);}
+
     //handle confirmations and
     public void confirmOrCancel(String command) {
         switch (command){
             case "Cancel" -> ui.notify(Window.START);
-            default -> {
-                //TODO: Add other cases and logic here
+            case "Add" -> {
+                dataModel.addToGameList(new GameEntity(tmpGameTitle, tmpGameFolder));
+                startWindow();
             }
         }
     }
@@ -95,5 +100,13 @@ public class UIController {
 
     public void setView(SaveManagerUI ui) {
         this.ui = ui;
+    }
+
+    public void setTmpGameTitle(String tmpGameTitle) {
+        this.tmpGameTitle = tmpGameTitle;
+    }
+
+    public void setTmpGameFolder(String tmpGameFolder) {
+        this.tmpGameFolder = tmpGameFolder;
     }
 }
