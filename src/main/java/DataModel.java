@@ -1,3 +1,4 @@
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mongodb.client.MongoClient;
@@ -16,7 +17,7 @@ public class DataModel {
 
     private static final DataModel instance = new DataModel();
     private final MongoDatabase mongoDatabase;
-    private ArrayList<gameEntity> gameList;
+    private ArrayList<GameEntity> gameList;
 
     private SaveManagerUI saveManagerUI;
     private DataModel() {
@@ -74,25 +75,23 @@ public class DataModel {
             Scanner scanner = new Scanner(jsonFile);
             String jsonString =scanner.nextLine();
             Gson gson = new Gson();
-            Type founderListType = new TypeToken<ArrayList<gameEntity>>(){}.getType();
+            Type founderListType = new TypeToken<ArrayList<GameEntity>>(){}.getType();
             gameList = gson.fromJson(jsonString, founderListType);
         }
         catch(IOException ex){
-            gameList = new ArrayList<gameEntity>();
+            gameList = new ArrayList<GameEntity>();
         }
-
-
     }
 
     public MongoDatabase getMongoDatabase() {
         return mongoDatabase;
     }
 
-    public ArrayList<gameEntity> getGameList() {
+    public ArrayList<GameEntity> getGameList() {
         return gameList;
     }
 
-    public void addToGameList(gameEntity gameEntity) {
+    public void addToGameList(GameEntity gameEntity) {
         this.gameList.add(gameEntity);
     }
 
