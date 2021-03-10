@@ -82,7 +82,7 @@ public class SaveManagerUI {
     private void prepareNewWindow(int rows,int cols){
         mainFrame.dispose();
         mainFrame = new JFrame("Save Manager");
-        mainFrame.setSize(400, 200);
+        mainFrame.setSize(600, 400);
         mainFrame.setLayout(new GridLayout(rows, cols));
         mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
@@ -93,17 +93,25 @@ public class SaveManagerUI {
         //The only panel with 3 rows is add new game
         if(rows == 5){
             headerLabel.setText("Enter Game Title Here");
-            JTextField textField = new JTextField(2);
+            JTextField textField = new JTextField(30);
             TextFieldActionListener textFieldListener= new TextFieldActionListener(textField,uiController);
             textField.addActionListener(textFieldListener);
             textField.addFocusListener(textFieldListener);
             //TODO: file explorer panel
-            JFileChooser fc =  new JFileChooser();
-            fc.showOpenDialog(mainFrame);
-            //TODO: add
+            // set up a file picker component
+            JFilePicker filePicker = new JFilePicker("Pick a file", "Browse...");
+            filePicker.setMode(JFilePicker.MODE_SAVE);
+
+
+            // access JFileChooser class directly
+            JFileChooser fileChooser = filePicker.getFileChooser();
+            //fileChooser.setCurrentDirectory(new File("D:/"));
+            controlPanel = new JPanel();
+            controlPanel.setLayout(new FlowLayout());
             mainFrame.add(headerLabel);
             mainFrame.add(textField);
-            mainFrame.add(new JLabel("Choose files to save to the cloud here", JLabel.CENTER));
+            mainFrame.add(new JLabel("Choose folders or files to save to the cloud here", JLabel.CENTER));
+            mainFrame.add(filePicker);
         }
         //Upload or download windows
         else if(rows == 2){
