@@ -2,7 +2,7 @@ public class UIController{
     private DataModel dataModel;
     private SaveManagerUI ui;
     private String tmpGameTitle = "";
-    private String tmpGameFolder = "";
+    private String tmpGameData = "";
     public enum Window {
         START,
         DOWNLOAD,
@@ -89,7 +89,10 @@ public class UIController{
         switch (command){
             case "Cancel" -> ui.notify(Window.START);
             case "Add" -> {
-                dataModel.addToGameList(new GameEntity(tmpGameTitle, tmpGameFolder));
+                ui.getAddData();
+                dataModel.addToGameList(new GameEntity(tmpGameTitle, tmpGameData));
+                tmpGameData = "";
+                tmpGameTitle = "";
                 startWindow();
             }
         }
@@ -106,7 +109,7 @@ public class UIController{
         this.tmpGameTitle = tmpGameTitle;
     }
 
-    public void setTmpGameFolder(String tmpGameFolder) {
-        this.tmpGameFolder = tmpGameFolder;
+    public void setTmpGameData(String tmpGameData) {
+        this.tmpGameData = tmpGameData;
     }
 }

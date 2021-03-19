@@ -22,7 +22,7 @@ public class JFilePicker extends JPanel {
         this.buttonLabel = buttonLabel;
 
         fileChooser = new JFileChooser();
-
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
         setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
         // creates the GUI

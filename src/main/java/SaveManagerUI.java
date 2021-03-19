@@ -97,8 +97,8 @@ public class SaveManagerUI {
             TextFieldActionListener textFieldListener= new TextFieldActionListener(textField,uiController);
             textField.addActionListener(textFieldListener);
             textField.addFocusListener(textFieldListener);
-            //TODO: file explorer panel
-            // set up a file picker component
+            //TODO: file explporer panel
+            //            // set up a file icker component
             JFilePicker filePicker = new JFilePicker("Pick a file", "Browse...");
             filePicker.setMode(JFilePicker.MODE_SAVE);
 
@@ -150,6 +150,15 @@ public class SaveManagerUI {
         controlPanel.add(confirmBtn);
         controlPanel.add(cancelBtn);
     }
-
-
+    //TODO: implement multiple file selection?
+    public void getAddData() {
+        for (Component cmp:mainFrame.getComponents()) {
+            if (cmp instanceof JFilePicker){
+                uiController.setTmpGameData(((JFilePicker) cmp).getSelectedFilePath());
+            }
+            else if(cmp instanceof JTextField){
+                uiController.setTmpGameTitle(((JTextField) cmp).getText());
+            }
+        }
+    }
 }
