@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class SaveManagerUI {
     private JFrame mainFrame;
@@ -94,18 +96,9 @@ public class SaveManagerUI {
         if(rows == 5){
             headerLabel.setText("Enter Game Title Here");
             JTextField textField = new JTextField(30);
-            TextFieldActionListener textFieldListener= new TextFieldActionListener(textField,uiController);
-            textField.addActionListener(textFieldListener);
-            textField.addFocusListener(textFieldListener);
-            //TODO: file explporer panel
-            //            // set up a file icker component
+            // set up a file picker component
             JFilePicker filePicker = new JFilePicker("Pick a file", "Browse...");
             filePicker.setMode(JFilePicker.MODE_SAVE);
-
-
-            // access JFileChooser class directly
-            JFileChooser fileChooser = filePicker.getFileChooser();
-            //fileChooser.setCurrentDirectory(new File("D:/"));
             controlPanel = new JPanel();
             controlPanel.setLayout(new FlowLayout());
             mainFrame.add(headerLabel);
@@ -151,14 +144,33 @@ public class SaveManagerUI {
         controlPanel.add(cancelBtn);
     }
     //TODO: implement multiple file selection?
-    public void getAddData() {
-        for (Component cmp:mainFrame.getComponents()) {
+    public GameEntity getAddData() {
+        String filePath = "";
+        String gameTitle = "";
+        String fileName = "";
+        boolean isFolder = true;
+        for (Component cmp:mainFrame.getContentPane().getComponents()) {
             if (cmp instanceof JFilePicker){
-                uiController.setTmpGameData(((JFilePicker) cmp).getSelectedFilePath());
+                filePath = ((JFilePicker) cmp).getSelectedFilePath();
+                Path path = Paths.get(filePath);
+                fileName = path.getFileName().toString();
+                if (fileName.contains(".")){
+                    isFolder = false;
+                }
             }
             else if(cmp instanceof JTextField){
-                uiController.setTmpGameTitle(((JTextField) cmp).getText());
+                gameTitle = ((JTextField) cmp).getText();
             }
+        }
+        return new GameEntity(gameTitle,filePath,fileName,isFolder);
+    }
+
+    public void showOptionPane(GameEntity tmpGameEntity) {
+        int result = JOptionPane.showConfirmDialog(mainFrame,"Upload selected file(s) now?", "Upload selected file(s)?",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+        if(result == JOptionPane.YES_OPTION){
+            uiController.uploadData(tmpGameEntity);
         }
     }
 }
