@@ -89,27 +89,22 @@ public class UIController{
         switch (command){
             case "Cancel" -> ui.notify(Window.START);
             case "Add" -> {
-                ui.getAddData();
-                dataModel.addToGameList(new GameEntity(tmpGameTitle, tmpGameData));
-                tmpGameData = "";
-                tmpGameTitle = "";
+                GameEntity tmpGameEntity = ui.getAddData();
+                dataModel.addToGameList(tmpGameEntity);
+                //TODO: Upload folder contents to mongodb
+                ui.showOptionPane(tmpGameEntity);
                 startWindow();
             }
         }
     }
+    public void uploadData(GameEntity tmpGameEntity){
+        dataModel.uploadData(tmpGameEntity);
+    };
     public void saveData(){
         dataModel.saveData();
     }
 
     public void setView(SaveManagerUI ui) {
         this.ui = ui;
-    }
-
-    public void setTmpGameTitle(String tmpGameTitle) {
-        this.tmpGameTitle = tmpGameTitle;
-    }
-
-    public void setTmpGameData(String tmpGameData) {
-        this.tmpGameData = tmpGameData;
     }
 }
