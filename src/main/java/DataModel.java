@@ -4,10 +4,12 @@ import com.google.gson.reflect.TypeToken;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.gridfs.GridFSBucket;
+import com.mongodb.client.gridfs.GridFSBuckets;
+import com.mongodb.client.gridfs.model.GridFSUploadOptions;
+import org.bson.types.ObjectId;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -18,10 +20,12 @@ public class DataModel {
     private static final DataModel instance = new DataModel();
     private final MongoDatabase mongoDatabase;
     private ArrayList<GameEntity> gameList;
+    private GridFSBucket gridFSBucket;
 
     private SaveManagerUI saveManagerUI;
     private DataModel() {
         mongoDatabase = getDbConnection();
+        gridFSBucket = GridFSBuckets.create(mongoDatabase,"files");
         loadData();
     }
 
@@ -81,6 +85,25 @@ public class DataModel {
         catch(IOException ex){
             gameList = new ArrayList<GameEntity>();
         }
+    }
+
+    public void uploadData(GameEntity gameEntity){
+        //Uploading to gridfs collection
+        try {
+            InputStream streamToUploadFrom = new FileInputStream(gameEntity.getFilePath());
+            // Create some custom options
+            GridFSUploadOptions options = new GridFSUploadOptions()
+                    .metadata(gameEntity.toDocument());
+            ObjectId fileId = gridFSBucket.uploadFromStream(gameEntity.getFileName(), streamToUploadFrom, options);
+        } catch (FileNotFoundException e){
+            // handle exception
+            //TODO: add dialog feedback on failure.
+            System.out.printf("ERROR: Game: %S failed to upload",gameEntity.getGameName());
+        }
+    }
+
+    public void downloadData(String gameTitle){
+
     }
 
     public MongoDatabase getMongoDatabase() {
