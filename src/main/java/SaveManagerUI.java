@@ -77,55 +77,54 @@ public class SaveManagerUI {
     }
 
     private void showAddWindow() {
-        prepareNewWindow(5,1);
+        prepareNewWindow();
         prepareConfirmAndCancelBtns("Add");
     }
 
-    private void prepareNewWindow(int rows,int cols){
+    private void initializeMainFrame(int rows){
         mainFrame.dispose();
         mainFrame = new JFrame("Save Manager");
         mainFrame.setSize(600, 400);
-        mainFrame.setLayout(new GridLayout(rows, cols));
+        mainFrame.setLayout(new GridLayout(rows, 1));
         mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
                 uiController.saveData();
                 System.exit(0);
             }
         });
-        //The only panel with 3 rows is add new game
-        if(rows == 5){
-            headerLabel.setText("Enter Game Title Here");
-            JTextField textField = new JTextField(30);
-            // set up a file picker component
-            JFilePicker filePicker = new JFilePicker("Pick a file", "Browse...");
-            filePicker.setMode(JFilePicker.MODE_SAVE);
-            controlPanel = new JPanel();
-            controlPanel.setLayout(new FlowLayout());
-            mainFrame.add(headerLabel);
-            mainFrame.add(textField);
-            mainFrame.add(new JLabel("Choose folders or files to save to the cloud here", JLabel.CENTER));
-            mainFrame.add(filePicker);
-        }
-        //Upload or download windows
-        else if(rows == 2){
-            //TODO: Add a selecting panel linked with game title data from model
-            mainFrame.add(new JLabel("Choose game title here", JLabel.CENTER));
-        }
+    }
+
+    private void prepareNewWindow(){
+        initializeMainFrame(5);
+        headerLabel.setText("Enter Game Title Here");
+        JTextField textField = new JTextField(30);
+        // set up a file picker component
+        JFilePicker filePicker = new JFilePicker("Pick a file", "Browse...");
+        filePicker.setMode(JFilePicker.MODE_SAVE);
+        controlPanel = new JPanel();//TODO determine if unused??
+        controlPanel.setLayout(new FlowLayout());
+        mainFrame.add(headerLabel);
+        mainFrame.add(textField);
+        mainFrame.add(new JLabel("Choose folders or files to save to the cloud here", JLabel.CENTER));
+        mainFrame.add(filePicker);
+        //TODO determine if unused??
         controlPanel = new JPanel();
         controlPanel.setLayout(new FlowLayout());
-
+        //
         mainFrame.add(controlPanel);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
     }
 
     private void showUploadWindow() {
-        prepareNewWindow(2,1);
+        initializeMainFrame(2);
+        //prepareNewWindow(2,1);
         prepareConfirmAndCancelBtns("Upload");
     }
 
     private void showDownloadWindow() {
-        prepareNewWindow(2,1);
+        initializeMainFrame(2);
+        //prepareNewWindow(2,1);
         prepareConfirmAndCancelBtns("Download");
     }
 
