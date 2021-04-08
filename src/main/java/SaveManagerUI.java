@@ -76,11 +76,6 @@ public class SaveManagerUI {
         }
     }
 
-    private void showAddWindow() {
-        prepareNewWindow();
-        prepareConfirmAndCancelBtns("Add");
-    }
-
     private void initializeMainFrame(int rows){
         mainFrame.dispose();
         mainFrame = new JFrame("Save Manager");
@@ -94,7 +89,7 @@ public class SaveManagerUI {
         });
     }
 
-    private void prepareNewWindow(){
+    private void showAddWindow(){
         initializeMainFrame(5);
         headerLabel.setText("Enter Game Title Here");
         JTextField textField = new JTextField(30);
@@ -107,11 +102,7 @@ public class SaveManagerUI {
         mainFrame.add(textField);
         mainFrame.add(new JLabel("Choose folders or files to save to the cloud here", JLabel.CENTER));
         mainFrame.add(filePicker);
-        //TODO determine if unused??
-        controlPanel = new JPanel();
-        controlPanel.setLayout(new FlowLayout());
-        //
-        mainFrame.add(controlPanel);
+        prepareConfirmAndCancelBtns("Add");
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
     }
@@ -139,8 +130,11 @@ public class SaveManagerUI {
         confirmBtn.addActionListener(buttonClickListener);
         cancelBtn.addActionListener(buttonClickListener);
 
+        controlPanel = new JPanel();
+        controlPanel.setLayout(new FlowLayout());
         controlPanel.add(confirmBtn);
         controlPanel.add(cancelBtn);
+        mainFrame.add(controlPanel);
     }
     //TODO: implement multiple file selection?
     public GameEntity getAddData() {
