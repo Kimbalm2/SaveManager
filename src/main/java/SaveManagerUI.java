@@ -63,7 +63,6 @@ public class SaveManagerUI {
         mainFrame.setVisible(true);
     }
 
-
     public void notify(UIController.Window window){
         switch (window){
             case START -> {
@@ -96,8 +95,6 @@ public class SaveManagerUI {
         // set up a file picker component
         JFilePicker filePicker = new JFilePicker("Pick a file", "Browse...");
         filePicker.setMode(JFilePicker.MODE_SAVE);
-        controlPanel = new JPanel();//TODO determine if unused??
-        controlPanel.setLayout(new FlowLayout());
         mainFrame.add(headerLabel);
         mainFrame.add(textField);
         mainFrame.add(new JLabel("Choose folders or files to save to the cloud here", JLabel.CENTER));
@@ -109,8 +106,11 @@ public class SaveManagerUI {
 
     private void showUploadWindow() {
         initializeMainFrame(2);
-        //prepareNewWindow(2,1);
+        headerLabel.setText("Select a game save you want to upload.");
+        mainFrame.add(headerLabel);
         prepareConfirmAndCancelBtns("Upload");
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setVisible(true);
     }
 
     private void showDownloadWindow() {
