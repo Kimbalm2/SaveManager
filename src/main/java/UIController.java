@@ -99,11 +99,13 @@ public class UIController{
     }
     public void uploadData(GameEntity tmpGameEntity){
         dataModel.uploadData(tmpGameEntity);
-    };
+    }
     public void saveData(){
         dataModel.saveData();
     }
-
+    public String[] getGameArray(){
+        return dataModel.getGameArray();
+    }
     public void setView(SaveManagerUI ui) {
         this.ui = ui;
     }

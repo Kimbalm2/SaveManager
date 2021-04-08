@@ -46,7 +46,7 @@ public class DataModel {
             File resources = new File(path);
             scan = new Scanner(resources);
         }
-        catch (IOException e){
+        catch (Exception e){
             System.exit(0);
         }
         return scan.nextLine();
@@ -83,7 +83,7 @@ public class DataModel {
             gameList = gson.fromJson(jsonString, founderListType);
         }
         catch(IOException ex){
-            gameList = new ArrayList<GameEntity>();
+            gameList = new ArrayList<>();
         }
     }
 
@@ -112,6 +112,13 @@ public class DataModel {
 
     public ArrayList<GameEntity> getGameList() {
         return gameList;
+    }
+    public String[] getGameArray(){
+        String[] array = new String[gameList.size()];
+        for(int i = 0; i < array.length; i++) {
+            array[i] = gameList.get(i).toString();
+        }
+        return array;
     }
 
     public void addToGameList(GameEntity gameEntity) {

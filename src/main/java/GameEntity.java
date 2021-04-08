@@ -35,4 +35,8 @@ public class GameEntity {
                 .append("File Name",fileName)
                 .append("isFolder",isFolder);
     }
+
+    public String toString(){
+        return gameName;
+    }
 }
