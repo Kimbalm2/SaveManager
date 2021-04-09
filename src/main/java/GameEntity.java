@@ -37,6 +37,6 @@ public class GameEntity {
     }
 
     public String toString(){
-        return gameName;
+        return gameName+":"+fileName;
     }
 }
