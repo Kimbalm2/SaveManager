@@ -107,9 +107,11 @@ public class SaveManagerUI {
     private void showUploadWindow() {
         initializeMainFrame(3);
         headerLabel.setText("Select a game save you want to upload.");
+        JPanel listPanel = new JPanel();
         JComboBox<String> gameList = new JComboBox<>(uiController.getGameArray());
+        listPanel.add(gameList);
         mainFrame.add(headerLabel);
-        mainFrame.add(gameList);
+        mainFrame.add(listPanel);
         prepareConfirmAndCancelBtns("Upload");
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
