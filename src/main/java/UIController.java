@@ -1,8 +1,15 @@
-public class UIController{
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class UIController implements ActionListener {
     private DataModel dataModel;
     private SaveManagerUI ui;
     private String tmpGameTitle = "";
     private String tmpGameData = "";
+
+    private JComboBox<String> gameList;
+
     public enum Window {
         START,
         DOWNLOAD,
@@ -84,8 +91,14 @@ public class UIController{
 
     public void startWindow(){ui.notify(Window.START);}
 
-    //handle confirmations and
-    public void confirmOrCancel(String command) {
+    /**
+     * Invoked when an action occurs.
+     *
+     * @param e the event to be processed
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
         switch (command){
             case "Cancel" -> ui.notify(Window.START);
             case "Add" -> {
@@ -95,6 +108,13 @@ public class UIController{
                 ui.showOptionPane(tmpGameEntity);
                 startWindow();
             }
+            case "Upload" -> {
+                int idx = gameList.getSelectedIndex();
+                uploadData(dataModel.getGameList().get(idx));
+            }
+            case "Add New Game Folder" -> newWindow();
+            case "Upload Saves" -> uploadWindow();
+            case "Download Saves" -> downloadWindow();
         }
     }
     public void uploadData(GameEntity tmpGameEntity){
@@ -108,5 +128,8 @@ public class UIController{
     }
     public void setView(SaveManagerUI ui) {
         this.ui = ui;
+    }
+    public void setGameList(JComboBox<String> gameList) {
+        this.gameList = gameList;
     }
 }
