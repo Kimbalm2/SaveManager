@@ -52,9 +52,9 @@ public class SaveManagerUI {
         uploadSavesBtn.setActionCommand("Upload Saves");
         downloadSavesBtn.setActionCommand("Download Saves");
 
-        addNewGameBtn.addActionListener(new mainButtonClickListener(uiController));
-        uploadSavesBtn.addActionListener(new mainButtonClickListener(uiController));
-        downloadSavesBtn.addActionListener(new mainButtonClickListener(uiController));
+        addNewGameBtn.addActionListener(uiController);
+        uploadSavesBtn.addActionListener(uiController);
+        downloadSavesBtn.addActionListener(uiController);
 
         controlPanel.add(addNewGameBtn);
         controlPanel.add(uploadSavesBtn);
@@ -109,6 +109,7 @@ public class SaveManagerUI {
         headerLabel.setText("Select a game save you want to upload.");
         JPanel listPanel = new JPanel();
         JComboBox<String> gameList = new JComboBox<>(uiController.getGameArray());
+        uiController.setGameList(gameList);
         listPanel.add(gameList);
         mainFrame.add(headerLabel);
         mainFrame.add(listPanel);
@@ -124,15 +125,14 @@ public class SaveManagerUI {
     }
 
     private void prepareConfirmAndCancelBtns (String btnName){
-        ConfirmAndCancelButtonClickListener buttonClickListener = new ConfirmAndCancelButtonClickListener(uiController);
         JButton confirmBtn = new JButton(btnName);
         JButton cancelBtn = new JButton("Cancel");
 
         confirmBtn.setActionCommand(btnName);
         cancelBtn.setActionCommand("Cancel");
 
-        confirmBtn.addActionListener(buttonClickListener);
-        cancelBtn.addActionListener(buttonClickListener);
+        confirmBtn.addActionListener(uiController);
+        cancelBtn.addActionListener(uiController);
 
         controlPanel = new JPanel();
         controlPanel.setLayout(new FlowLayout());
