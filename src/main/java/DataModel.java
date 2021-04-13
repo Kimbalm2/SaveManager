@@ -70,8 +70,6 @@ public class DataModel {
         }
     }
     private void loadData(){
-        //TODO remove when finished with add new game logic.
-        //String founderJson = "[{'gameName': 'Christian','filePath': 1}, {'gameName': 'Marcus', 'filePath': 3}, {'gameName': 'Norman', 'filePath': 2}]";
         String currentDir = System.getProperty("user.dir");
         currentDir = currentDir + "\\src\\main\\resources\\gamePaths.json";
         File jsonFile = new File(currentDir);
