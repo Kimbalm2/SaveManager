@@ -63,16 +63,9 @@ public class SaveManagerUI {
         mainFrame.setVisible(true);
     }
 
-    public void notify(UIController.Window window){
-        switch (window){
-            case START -> {
-                mainFrame.dispose();
-                showMainGUI();
-            }
-            case ADD -> showAddWindow();
-            case UPLOAD -> showUploadWindow();
-            case DOWNLOAD -> showDownloadWindow();
-        }
+    public void startWindow(){
+        mainFrame.dispose();
+        showMainGUI();
     }
 
     private void initializeMainFrame(int rows){
@@ -88,7 +81,7 @@ public class SaveManagerUI {
         });
     }
 
-    private void showAddWindow(){
+    public void showAddWindow(){
         initializeMainFrame(5);
         headerLabel.setText("Enter Game Title Here");
         JTextField textField = new JTextField(30);
@@ -104,7 +97,7 @@ public class SaveManagerUI {
         mainFrame.setVisible(true);
     }
 
-    private void showUploadWindow() {
+    public void showUploadWindow() {
         initializeMainFrame(3);
         headerLabel.setText("Select a game save you want to upload.");
         JPanel listPanel = new JPanel();
@@ -118,7 +111,7 @@ public class SaveManagerUI {
         mainFrame.setVisible(true);
     }
 
-    private void showDownloadWindow() {
+    public void showDownloadWindow() {
         initializeMainFrame(2);
         //prepareNewWindow(2,1);
         prepareConfirmAndCancelBtns("Download");

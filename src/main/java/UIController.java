@@ -5,91 +5,11 @@ import java.awt.event.ActionListener;
 public class UIController implements ActionListener {
     private DataModel dataModel;
     private SaveManagerUI ui;
-    private String tmpGameTitle = "";
-    private String tmpGameData = "";
-
     private JComboBox<String> gameList;
 
-    public enum Window {
-        START,
-        DOWNLOAD,
-        UPLOAD,
-        ADD
-    }
     public UIController(){
         dataModel = DataModel.getInstance();
     }
-
-    private static void dbPractice(){
-       
-        //MongoClient mongoClient = MongoClients.create(uri);
-        //MongoDatabase database = mongoClient.getDatabase("test");
-        //MongoCollection<Document> collection = database.getCollection("");
-        //{
-        //"Game" : "",
-        //"modification date" : "database",
-        //  "file" : datastring
-        //}
-        //Document doc = new Document("Game", "Dyson Sphere Project")
-        //       .append("modification date", "mm/dd/yyyy")
-        //     .append("file","data");
-
-        // Create a gridFSBucket using the default bucket name "fs"
-        //http://mongodb.github.io/mongo-java-driver/4.1/driver/tutorials/gridfs/
-        /*GridFSBucket gridFSBucket = GridFSBuckets.create(database,"files");
-        GridFSFindIterable files = gridFSBucket.find(eq("metadata.Game", "Dyson Sphere Project"));
-
-        //deleting files
-        for (GridFSFile file:files) {
-            ObjectId gameId = file.getObjectId();
-
-
-            System.out.println("Removed file from db.");
-        }
-        GridFSFindIterable allFiles = gridFSBucket.find();
-
-        for (GridFSFile file:allFiles) {
-            System.out.println(file.getMetadata().toJson());
-            file.
-        }
-        */
-
-        // Get the input stream
-        //Uploading to gridfs collection
-        /*try {
-            InputStream streamToUploadFrom = new FileInputStream(new File("dyson.txt"));
-            // Create some custom options
-            GridFSUploadOptions options = new GridFSUploadOptions()
-                    .metadata(new Document("Game", "Dyson Sphere Project"));
-
-            ObjectId fileId = gridFSBucket.uploadFromStream("dyson.txt", streamToUploadFrom, options);
-        } catch (FileNotFoundException e){
-            // handle exception
-        }
-        //download the file
-        try {
-            FileOutputStream streamToDownloadTo = new FileOutputStream("newDyson.txt");
-            gridFSBucket.downloadToStream("dyson.txt", streamToDownloadTo);
-            streamToDownloadTo.close();
-            System.out.println(streamToDownloadTo.toString());
-        } catch (IOException e) {
-            // handle exception
-        }*/
-    }
-
-    public void downloadWindow() {
-        ui.notify(Window.DOWNLOAD);
-    }
-
-    public void uploadWindow() {
-        ui.notify(Window.UPLOAD);
-    }
-
-    public void newWindow() {
-        ui.notify(Window.ADD);
-    }
-
-    public void startWindow(){ui.notify(Window.START);}
 
     /**
      * Invoked when an action occurs.
@@ -100,21 +20,21 @@ public class UIController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         switch (command){
-            case "Cancel" -> ui.notify(Window.START);
+            case "Cancel" -> ui.startWindow();
             case "Add" -> {
                 GameEntity tmpGameEntity = ui.getAddData();
                 dataModel.addToGameList(tmpGameEntity);
                 //TODO: Upload folder contents to mongodb
                 ui.showOptionPane(tmpGameEntity);
-                startWindow();
+                ui.startWindow();
             }
             case "Upload" -> {
                 int idx = gameList.getSelectedIndex();
                 uploadData(dataModel.getGameList().get(idx));
             }
-            case "Add New Game Folder" -> newWindow();
-            case "Upload Saves" -> uploadWindow();
-            case "Download Saves" -> downloadWindow();
+            case "Add New Game Folder" -> ui.showAddWindow();
+            case "Upload Saves" -> ui.showUploadWindow();
+            case "Download Saves" -> ui.showDownloadWindow();
         }
     }
     public void uploadData(GameEntity tmpGameEntity){
