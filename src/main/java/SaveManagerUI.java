@@ -163,4 +163,11 @@ public class SaveManagerUI {
             uiController.uploadData(tmpGameEntity);
         }
     }
+
+    public void showOptionPane(){
+        int result = JOptionPane.showOptionDialog(mainFrame,"File upload successful!","File Upload",JOptionPane.DEFAULT_OPTION,JOptionPane.INFORMATION_MESSAGE,null,null,null);
+        if (result == 0){
+            startWindow();
+        }
+    }
 }

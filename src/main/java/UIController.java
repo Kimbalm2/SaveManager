@@ -31,6 +31,7 @@ public class UIController implements ActionListener {
             case "Upload" -> {
                 int idx = gameList.getSelectedIndex();
                 uploadData(dataModel.getGameList().get(idx));
+                ui.showOptionPane();
             }
             case "Add New Game Folder" -> ui.showAddWindow();
             case "Upload Saves" -> ui.showUploadWindow();
