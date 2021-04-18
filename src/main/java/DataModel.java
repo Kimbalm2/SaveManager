@@ -88,11 +88,13 @@ public class DataModel {
     public void uploadData(GameEntity gameEntity){
         //Uploading to gridfs collection
         try {
+            gridFSBucket.delete(gameEntity.getObjectId());
             InputStream streamToUploadFrom = new FileInputStream(gameEntity.getFilePath());
             // Create some custom options
             GridFSUploadOptions options = new GridFSUploadOptions()
                     .metadata(gameEntity.toDocument());
             ObjectId fileId = gridFSBucket.uploadFromStream(gameEntity.getFileName(), streamToUploadFrom, options);
+            gameEntity.setObjectId(fileId);
         } catch (FileNotFoundException e){
             // handle exception
             //TODO: add dialog feedback on failure.
