@@ -110,11 +110,19 @@ public class SaveManagerUI {
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
     }
-
+    //TODO: change the way we get the list of games to get it from the database.
     public void showDownloadWindow() {
-        initializeMainFrame(2);
-        //prepareNewWindow(2,1);
+        initializeMainFrame(3);
+        headerLabel.setText("Select a game save you want to upload.");
+        JPanel listPanel = new JPanel();
+        JComboBox<String> gameList = new JComboBox<>(uiController.getGameArrayFromDB());
+        uiController.setGameList(gameList);
+        listPanel.add(gameList);
+        mainFrame.add(headerLabel);
+        mainFrame.add(listPanel);
         prepareConfirmAndCancelBtns("Download");
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setVisible(true);
     }
 
     private void prepareConfirmAndCancelBtns (String btnName){

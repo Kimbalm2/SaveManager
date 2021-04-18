@@ -1,4 +1,3 @@
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mongodb.client.MongoClient;
@@ -8,7 +7,6 @@ import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import com.mongodb.client.gridfs.model.GridFSUploadOptions;
 import org.bson.types.ObjectId;
-
 import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -102,17 +100,27 @@ public class DataModel {
         }
     }
 
-    public void downloadData(String gameTitle){
-
+    public void downloadData(GameEntity game){
+        //TODO get file from gridfs
+        //write file to selected folder if match
+        //if no match need user to select folder where file is located.
+            //once it's selected then write file to folder
+            //if no match also add to JSON
     }
-
-    public MongoDatabase getMongoDatabase() {
-        return mongoDatabase;
+    //TODO
+    public String[] getGameArrayFromDB(){
+        String[] array = new String[gameList.size()];
+        return array;
+    }
+    //TODO
+    public GameEntity getDBEntity(String key){
+        return gameList.get(0);
     }
 
     public ArrayList<GameEntity> getGameList() {
         return gameList;
     }
+
     public String[] getGameArray(){
         String[] array = new String[gameList.size()];
         for(int i = 0; i < array.length; i++) {
