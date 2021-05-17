@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
+
 //https://www.codejava.net/java-se/swing/file-picker-component-in-swing
 public class JFilePicker extends JPanel {
     private String textFieldLabel;
@@ -61,6 +63,10 @@ public class JFilePicker extends JPanel {
 
     public String getSelectedFilePath() {
         return textField.getText();
+    }
+
+    public Date getModificationDate (){
+        return new Date(fileChooser.getSelectedFile().lastModified());
     }
 
     public JFileChooser getFileChooser() {

@@ -1,18 +1,20 @@
 import org.bson.Document;
 import org.bson.types.ObjectId;
 
+import java.util.Date;
+
 public class GameEntity {
     private final String gameName;
     private final String filePath;
     private final String fileName;
-    private final boolean isFolder;
+    private final Date lastModifiedDate;
     private ObjectId objectId;
 
-    public GameEntity(String gameName, String filePath, String fileName, boolean isFolder){
+    public GameEntity(String gameName, String filePath, String fileName, Date lastModifiedDate){
         this.gameName = gameName;
         this.filePath = filePath;
         this.fileName = fileName;
-        this.isFolder = isFolder;
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public String getGameName() {
@@ -27,9 +29,7 @@ public class GameEntity {
         return fileName;
     }
 
-    public boolean isFolder() {
-        return isFolder;
-    }
+
 
     public void setObjectId(ObjectId objectId){
         this. objectId = objectId;
@@ -43,8 +43,10 @@ public class GameEntity {
         return new Document()
                 .append("Game Title",gameName)
                 .append("File Name",fileName)
-                .append("isFolder",isFolder)
-                .append("fileID",objectId);
+                .append("Last Modified Date",lastModifiedDate)
+                .append("fileID",objectId)
+                .append("key",toString())
+                .append("File Path",filePath);
     }
 
     public String toString(){

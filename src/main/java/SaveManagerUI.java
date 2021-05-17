@@ -1,11 +1,10 @@
-
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 
 public class SaveManagerUI {
     private JFrame mainFrame;
@@ -143,24 +142,22 @@ public class SaveManagerUI {
     }
     //TODO: implement multiple file selection?
     public GameEntity getAddData() {
+        Date lastModifiedDate = new Date();
         String filePath = "";
         String gameTitle = "";
         String fileName = "";
-        boolean isFolder = true;
         for (Component cmp:mainFrame.getContentPane().getComponents()) {
             if (cmp instanceof JFilePicker){
                 filePath = ((JFilePicker) cmp).getSelectedFilePath();
+                lastModifiedDate = ((JFilePicker) cmp).getModificationDate();
                 Path path = Paths.get(filePath);
                 fileName = path.getFileName().toString();
-                if (fileName.contains(".")){
-                    isFolder = false;
-                }
             }
             else if(cmp instanceof JTextField){
                 gameTitle = ((JTextField) cmp).getText();
             }
         }
-        return new GameEntity(gameTitle,filePath,fileName,isFolder);
+        return new GameEntity(gameTitle,filePath,fileName,lastModifiedDate);
     }
 
     public void showOptionPane(GameEntity tmpGameEntity) {

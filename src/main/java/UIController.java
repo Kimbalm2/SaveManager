@@ -34,7 +34,7 @@ public class UIController implements ActionListener {
                 ui.showOptionPane();
             }
             case "Download" -> {
-                downloadData(dataModel.getDBEntity((String) gameList.getSelectedItem()));
+                downloadData((String) gameList.getSelectedItem());
                 ui.showOptionPane();
             }
             case "Add New Game Folder" -> ui.showAddWindow();
@@ -45,7 +45,7 @@ public class UIController implements ActionListener {
     public void uploadData(GameEntity tmpGameEntity){
         dataModel.uploadData(tmpGameEntity);
     }
-    public void downloadData(GameEntity key){
+    public void downloadData(String key){
         dataModel.downloadData(key);
     }
     public void saveData(){
