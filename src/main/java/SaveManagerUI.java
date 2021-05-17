@@ -113,7 +113,7 @@ public class SaveManagerUI {
     //TODO: change the way we get the list of games to get it from the database.
     public void showDownloadWindow() {
         initializeMainFrame(3);
-        headerLabel.setText("Select a game save you want to upload.");
+        headerLabel.setText("Select a game save you want to download.");
         JPanel listPanel = new JPanel();
         JComboBox<String> gameList = new JComboBox<>(uiController.getGameArrayFromDB());
         uiController.setGameList(gameList);
