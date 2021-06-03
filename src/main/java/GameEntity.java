@@ -4,10 +4,10 @@ import org.bson.types.ObjectId;
 import java.util.Date;
 
 public class GameEntity {
-    private final String gameName;
-    private final String filePath;
-    private final String fileName;
-    private final Date lastModifiedDate;
+    private String gameName;
+    private String filePath;
+    private String fileName;
+    private Date lastModifiedDate;
     private ObjectId objectId;
 
     public GameEntity(String gameName, String filePath, String fileName, Date lastModifiedDate){
@@ -15,10 +15,6 @@ public class GameEntity {
         this.filePath = filePath;
         this.fileName = fileName;
         this.lastModifiedDate = lastModifiedDate;
-    }
-
-    public String getGameName() {
-        return gameName;
     }
 
     public String getFilePath() {
@@ -29,14 +25,36 @@ public class GameEntity {
         return fileName;
     }
 
+    public String getGameName() {
+        return gameName;
+    }
 
-
-    public void setObjectId(ObjectId objectId){
-        this. objectId = objectId;
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
     }
 
     public ObjectId getObjectId (){
         return objectId;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public void setObjectId(ObjectId objectId){
+        this. objectId = objectId;
     }
 
     public Document toDocument(){
