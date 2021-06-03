@@ -7,7 +7,9 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import com.mongodb.client.gridfs.GridFSFindIterable;
+import com.mongodb.client.gridfs.model.GridFSFile;
 import com.mongodb.client.gridfs.model.GridFSUploadOptions;
+import org.bson.Document;
 import org.bson.types.ObjectId;
 import java.io.*;
 import java.lang.reflect.Type;
@@ -20,14 +22,14 @@ import static com.mongodb.client.model.Filters.eq;
 public class DataModel {
 
     private static final DataModel instance = new DataModel();
-    private final MongoDatabase mongoDatabase;
     private ArrayList<GameEntity> gameList;
     //(gameName:fileName) -> filePath
     private HashMap<String,String> localGamePathMap;
-    private GridFSBucket gridFSBucket;
-    private SaveManagerUI saveManagerUI;
+    private final GridFSBucket gridFSBucket;
+
+
     private DataModel() {
-        mongoDatabase = getDbConnection();
+        MongoDatabase mongoDatabase = getDbConnection();
         gridFSBucket = GridFSBuckets.create(mongoDatabase,"files");
         loadData();
     }
@@ -93,7 +95,6 @@ public class DataModel {
     }
 
     public void uploadData(GameEntity gameEntity){
-        //Uploading to gridfs collection
         try {
             gridFSBucket.delete(gameEntity.getObjectId());
             InputStream streamToUploadFrom = new FileInputStream(gameEntity.getFilePath());
@@ -108,37 +109,38 @@ public class DataModel {
             System.out.printf("ERROR: Game: %S failed to upload",gameEntity.getGameName());
         }
     }
-    //TODO: Think about the flow of this logic -> find the game key I already found from the gridFS in getGameArrayFromDB????? can we simplify this?
     public void downloadData(String gameKey){
-        GridFSFindIterable gridFSFile = gridFSBucket.find(eq("metadata.key", gameKey));
-        //TODO:
-        //write file to selected folder if match
-        //if no match need user to select folder where file is located.
-        //once it's selected then write file to folder
-        //if no match also add to JSON
-        //Not found in DB - what should we do?
-        if(gridFSFile.first() == null){
-
+        GridFSFindIterable gridFSFindIterable = gridFSBucket.find(eq("metadata.key", gameKey));
+        FileOutputStream streamToDownloadTo;
+        //we found a game file with the game key gameName:fileName
+        GridFSFile gridFSFile = gridFSFindIterable.first();
+        if (gridFSFile != null){
+            try {
+                streamToDownloadTo = new FileOutputStream(localGamePathMap.get(gameKey));
+                gridFSBucket.downloadToStream(gridFSFile.getObjectId(), streamToDownloadTo);
+                streamToDownloadTo.close();
+            } catch (IOException e) {
+                //TODO notify user
+                e.printStackTrace();
+            }
         }
-        //Found in db
-        else {
-            //try and do a key lookup to the hash map
-                //if found then write to file path - after prompting them to do so. We will need some new preview windows and stuff here
-                //else we need to prompt them to select a file path to download the file to - similar to add game window logic.
-        }
-
+        //Not found in DB - what should we do? Will this ever happen? All possible gameKeys would be from the db already.
     }
-    //TODO: resolve warning
+    
     public String[] getGameArrayFromDB(){
         ArrayList<String> dbGameList = new ArrayList<>();
+        String[] gameArray;
+        //for every game file stored, get the key we use to map to the file paths in local storage.
         gridFSBucket.find()
-                .forEach(gridFSFile -> dbGameList.add(gridFSFile.getMetadata().get("key").toString()));
-        String[] array = dbGameList.toArray(new String[dbGameList.size()]);
-        return array;
-    }
-    //TODO
-    public GameEntity getDBEntity(String key){
-        return gameList.get(0);
+                .forEach(gridFSFile ->
+                {
+                    Document metaData = gridFSFile.getMetadata();
+                    if (metaData != null && metaData.containsKey("key")){
+                        dbGameList.add(metaData.get("key").toString());
+                    }
+                });
+        gameArray = new String[dbGameList.size()];
+        return dbGameList.toArray(gameArray);
     }
 
     public ArrayList<GameEntity> getGameList() {
@@ -155,6 +157,14 @@ public class DataModel {
 
     public void addToGameList(GameEntity gameEntity) {
         this.gameList.add(gameEntity);
+    }
+
+    public void addToLocalGamePathMap (String key, String filePath){
+        localGamePathMap.put(key,filePath);
+    }
+
+    public boolean hasPath (String key){
+        return localGamePathMap.containsKey(key);
     }
 
 }
