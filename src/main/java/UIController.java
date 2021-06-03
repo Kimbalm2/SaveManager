@@ -1,9 +1,10 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 public class UIController implements ActionListener {
-    private DataModel dataModel;
+    private final DataModel dataModel;
     private SaveManagerUI ui;
     private JComboBox<String> gameList;
 
@@ -34,8 +35,27 @@ public class UIController implements ActionListener {
                 ui.showOptionPane();
             }
             case "Download" -> {
-                downloadData((String) gameList.getSelectedItem());
-                ui.showOptionPane();
+                if(downloadData((String) gameList.getSelectedItem())){
+                    ui.showOptionPane();
+                }
+            }
+            case "Confirm" ->{
+                GameEntity tempGameEntity = ui.getAddData();
+                String[] gameAndFileName;
+                String fileKey = (String) gameList.getSelectedItem();
+                if (fileKey != null && fileKey.contains(":"))
+                {
+                    gameAndFileName = fileKey.split(":");
+                    tempGameEntity.setGameName(gameAndFileName[0]);
+                    tempGameEntity.setFileName(gameAndFileName[1]);
+                    tempGameEntity.setFilePath(tempGameEntity.getFilePath() + "/" + gameAndFileName[1]);
+                    tempGameEntity.setLastModifiedDate(new Date(System.currentTimeMillis()));
+                    dataModel.addToGameList(tempGameEntity);
+                    dataModel.addToLocalGamePathMap(fileKey,tempGameEntity.getFilePath());
+                    downloadData(fileKey);
+                    ui.showOptionPane();
+                }
+
             }
             case "Add New Game Folder" -> ui.showAddWindow();
             case "Upload Saves" -> ui.showUploadWindow();
@@ -45,8 +65,15 @@ public class UIController implements ActionListener {
     public void uploadData(GameEntity tmpGameEntity){
         dataModel.uploadData(tmpGameEntity);
     }
-    public void downloadData(String key){
-        dataModel.downloadData(key);
+    public boolean downloadData(String key){
+        if(!dataModel.hasPath(key)) {
+            ui.showSelectPathWindow();
+            return false;
+        }
+        else {
+            dataModel.downloadData(key);
+            return true;
+        }
     }
     public void saveData(){
         dataModel.saveData();
