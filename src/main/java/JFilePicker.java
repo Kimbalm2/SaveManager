@@ -1,44 +1,30 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Date;
 
 //https://www.codejava.net/java-se/swing/file-picker-component-in-swing
 public class JFilePicker extends JPanel {
-    private String textFieldLabel;
-    private String buttonLabel;
-
-    private JLabel label;
-    private JTextField textField;
-    private JButton button;
-
-    private JFileChooser fileChooser;
-
+    private final JTextField textField;
+    private final JFileChooser fileChooser;
     private int mode;
     public static final int MODE_OPEN = 1;
     public static final int MODE_SAVE = 2;
 
-    public JFilePicker(String textFieldLabel, String buttonLabel) {
-        this.textFieldLabel = textFieldLabel;
-        this.buttonLabel = buttonLabel;
+
+    public JFilePicker(String textFieldLabel, String buttonLabel, int selectionMode) {
 
         fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        fileChooser.setFileSelectionMode(selectionMode);
         setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
         // creates the GUI
-        label = new JLabel(textFieldLabel);
+        JLabel label = new JLabel(textFieldLabel);
 
         textField = new JTextField(30);
-        button = new JButton(buttonLabel);
+        JButton button = new JButton(buttonLabel);
 
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                buttonActionPerformed(evt);
-            }
-        });
+        button.addActionListener(this::buttonActionPerformed);
 
         add(label);
         add(textField);
@@ -67,9 +53,5 @@ public class JFilePicker extends JPanel {
 
     public Date getModificationDate (){
         return new Date(fileChooser.getSelectedFile().lastModified());
-    }
-
-    public JFileChooser getFileChooser() {
-        return this.fileChooser;
     }
 }
