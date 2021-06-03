@@ -85,7 +85,7 @@ public class SaveManagerUI {
         headerLabel.setText("Enter Game Title Here");
         JTextField textField = new JTextField(30);
         // set up a file picker component
-        JFilePicker filePicker = new JFilePicker("Pick a file", "Browse...");
+        JFilePicker filePicker = new JFilePicker("Pick a file", "Browse...",JFileChooser.FILES_ONLY);
         filePicker.setMode(JFilePicker.MODE_SAVE);
         mainFrame.add(headerLabel);
         mainFrame.add(textField);
@@ -120,6 +120,19 @@ public class SaveManagerUI {
         mainFrame.add(headerLabel);
         mainFrame.add(listPanel);
         prepareConfirmAndCancelBtns("Download");
+        mainFrame.setLocationRelativeTo(null);
+        mainFrame.setVisible(true);
+    }
+
+    public void showSelectPathWindow(){
+        initializeMainFrame(3);
+        // set up a file picker component
+        JFilePicker filePicker = new JFilePicker("Pick a folder to save file to", "Browse...",JFileChooser.DIRECTORIES_ONLY);
+        filePicker.setMode(JFilePicker.MODE_SAVE);
+        mainFrame.add(headerLabel);
+        mainFrame.add(new JLabel("Choose the folder you want to save the file to", JLabel.CENTER));
+        mainFrame.add(filePicker);
+        prepareConfirmAndCancelBtns("Confirm");
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setVisible(true);
     }
