@@ -11,7 +11,8 @@ public class SaveManagerUI {
     private JLabel headerLabel;
     private JPanel controlPanel;
     private final UIController uiController;
-
+    private static final int DEFAULT_WIDTH = 400;
+    private static final int DEFAULT_HEIGHT = 250;
     public SaveManagerUI(UIController uiController) {
         this.uiController = uiController;
         uiController.setView(this);
@@ -43,9 +44,9 @@ public class SaveManagerUI {
         prepareMainGUI();
         headerLabel.setText("What would you like to do?");
 
-        JButton addNewGameBtn = new JButton("Add New Game");
-        JButton uploadSavesBtn = new JButton("Upload Saves");
-        JButton downloadSavesBtn = new JButton("Download Saves");
+        JButton addNewGameBtn = new JButton("Add New Save");
+        JButton uploadSavesBtn = new JButton("Upload Save");
+        JButton downloadSavesBtn = new JButton("Download Save");
 
         addNewGameBtn.setActionCommand("Add New Game Folder");
         uploadSavesBtn.setActionCommand("Upload Saves");
@@ -67,10 +68,10 @@ public class SaveManagerUI {
         showMainGUI();
     }
 
-    private void initializeMainFrame(int rows){
+    private void initializeMainFrame(int rows, int width, int height){
         mainFrame.dispose();
         mainFrame = new JFrame("Save Manager");
-        mainFrame.setSize(600, 400);
+        mainFrame.setSize(width, height);
         mainFrame.setLayout(new GridLayout(rows, 1));
         mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
@@ -81,7 +82,7 @@ public class SaveManagerUI {
     }
 
     public void showAddWindow(){
-        initializeMainFrame(5);
+        initializeMainFrame(5, 600, DEFAULT_HEIGHT);
         headerLabel.setText("Enter Game Title Here");
         JTextField textField = new JTextField(30);
         // set up a file picker component
@@ -89,7 +90,7 @@ public class SaveManagerUI {
         filePicker.setMode(JFilePicker.MODE_SAVE);
         mainFrame.add(headerLabel);
         mainFrame.add(textField);
-        mainFrame.add(new JLabel("Choose folders or files to save to the cloud here", JLabel.CENTER));
+        mainFrame.add(new JLabel("Choose files to save to the cloud here", JLabel.CENTER));
         mainFrame.add(filePicker);
         prepareConfirmAndCancelBtns("Add");
         mainFrame.setLocationRelativeTo(null);
@@ -97,8 +98,8 @@ public class SaveManagerUI {
     }
 
     public void showUploadWindow() {
-        initializeMainFrame(3);
-        headerLabel.setText("Select a game save you want to upload.");
+        initializeMainFrame(3, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        headerLabel.setText("Select a save file you want to upload.");
         JPanel listPanel = new JPanel();
         JComboBox<String> gameList = new JComboBox<>(uiController.getGameArray());
         uiController.setGameList(gameList);
@@ -111,8 +112,8 @@ public class SaveManagerUI {
     }
     //TODO: change the way we get the list of games to get it from the database.
     public void showDownloadWindow() {
-        initializeMainFrame(3);
-        headerLabel.setText("Select a game save you want to download.");
+        initializeMainFrame(3,DEFAULT_WIDTH,DEFAULT_HEIGHT);
+        headerLabel.setText("Select a save file you want to download.");
         JPanel listPanel = new JPanel();
         JComboBox<String> gameList = new JComboBox<>(uiController.getGameArrayFromDB());
         uiController.setGameList(gameList);
@@ -125,12 +126,12 @@ public class SaveManagerUI {
     }
 
     public void showSelectPathWindow(){
-        initializeMainFrame(3);
+        initializeMainFrame(2, 700, 150);
         // set up a file picker component
-        JFilePicker filePicker = new JFilePicker("Pick a folder to save file to", "Browse...",JFileChooser.DIRECTORIES_ONLY);
+        JFilePicker filePicker = new JFilePicker("Pick a folder to save this file to", "Browse...",JFileChooser.DIRECTORIES_ONLY);
         filePicker.setMode(JFilePicker.MODE_SAVE);
-        mainFrame.add(headerLabel);
-        mainFrame.add(new JLabel("Choose the folder you want to save the file to", JLabel.CENTER));
+        //headerLabel.setText("");
+        //mainFrame.add(headerLabel);
         mainFrame.add(filePicker);
         prepareConfirmAndCancelBtns("Confirm");
         mainFrame.setLocationRelativeTo(null);
@@ -151,6 +152,7 @@ public class SaveManagerUI {
         controlPanel.setLayout(new FlowLayout());
         controlPanel.add(confirmBtn);
         controlPanel.add(cancelBtn);
+        controlPanel.setPreferredSize(controlPanel.getPreferredSize());
         mainFrame.add(controlPanel);
     }
     //TODO: implement multiple file selection?

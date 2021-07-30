@@ -96,7 +96,9 @@ public class DataModel {
 
     public void uploadData(GameEntity gameEntity){
         try {
-            gridFSBucket.delete(gameEntity.getObjectId());
+            if(gameEntity.getObjectId() != null) {
+                gridFSBucket.delete(gameEntity.getObjectId());
+            }
             InputStream streamToUploadFrom = new FileInputStream(gameEntity.getFilePath());
             // Create some custom options
             GridFSUploadOptions options = new GridFSUploadOptions()
